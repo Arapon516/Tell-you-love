@@ -1,0 +1,544 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Tell_you_love
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            /*   string[] Answer = new string[4]; //答えを配列化（"love"）
+                Answer[0] = "l";
+                Answer[1] = "o";
+                Answer[2] = "v";
+                Answer[3] = "e";
+
+                int length = 4;
+
+                bool endflag = false;
+                int sedai = 0;
+                String[,] Kouho = new string[10, length]; //一世代の10個体
+
+                for (int i = 0; i < 10; i++)    //1世代分をランダムで生成
+                {
+                    for (int j = 0; j < length; j++)
+                    {
+                        String s = GetRandomAlphaNumeric();
+                        while ((s == "1") || (s == "2") || (s == "3") || (s == "4") || (s == "5") || (s == "6") || (s == "7") || (s == "8") || (s == "9") || (s == "0"))
+                        {
+                            s = GetRandomAlphaNumeric();
+                        }
+                        Kouho[i, j] = s;
+                    }
+                }
+
+                while (endflag != true)
+                {
+                    int[] fit = new int[10];
+
+                    ///////////////////////////////////////////////////////////////////////////////////////
+                    //今回の適合度の判定方法：場所、文字一致で10点、文字一致,場所不一致で５点で評価する。//
+                    ///////////////////////////////////////////////////////////////////////////////////////
+
+                    for (int i = 0; i < 10; i++) //適合度評価開始
+                    {
+                        for (int j = 0; j < length; j++)
+                        {
+                            if (Answer[j] == Kouho[i, j]) fit[i] = fit[i] + 10; //場所、文字一致で10点
+                            if (((j != 0) && (Answer[0] == Kouho[i, j])) || ((j != 1) && (Answer[1] == Kouho[i, j])) || ((j != 2) && (Answer[2] == Kouho[i, j])) || ((j != 3) && (Answer[3] == Kouho[i, j]))) fit[i] = fit[i] + 5; //文字一致,場所不一致で５点
+                        }
+                        if (fit[i] == 40)
+                        {
+
+                            endflag = true;
+                        }//終了判定
+                    }
+
+
+
+                    int bestfit1 = 0;  //適合度第1位
+                    int bestfit2 = 0; //適合度第2位
+
+                    for (int i = 0; i < 10; i++)   //適合度判定
+                    {
+                        if (fit[i] >= fit[bestfit2]||((fit[i] != fit[bestfit1])&&(fit[i]>=20)))
+                        {
+                                bestfit2 = i;
+
+
+                            if (fit[bestfit1] < fit[bestfit2])
+                            {
+                                int a = bestfit1;
+                                bestfit1 = bestfit2;
+                                bestfit2 = a;
+                            }
+                        }
+
+                    }
+
+
+
+
+                    for (int i = 0; i < 10; i++) //表示
+                    {
+                        Console.WriteLine(sedai + "世代:" + Kouho[i, 0] + Kouho[i, 1] + Kouho[i, 2] + Kouho[i, 3] + "\t" + "適合度:" + fit[i]);
+                    }
+                    Console.WriteLine(" ");
+                    Console.WriteLine(sedai + "世代の適合度 第1位:" + Kouho[bestfit1, 0] + Kouho[bestfit1, 1] + Kouho[bestfit1, 2] + Kouho[bestfit1, 3]);
+                    Console.WriteLine(sedai + "世代の適合度 第2位:" + Kouho[bestfit2, 0] + Kouho[bestfit2, 1] + Kouho[bestfit2, 2] + Kouho[bestfit2, 3]);
+                    Console.WriteLine("-------------------------------");
+                    Console.WriteLine(" ");
+                    sedai = sedai + 1;
+
+                    string[] th = new string[60];
+
+                    for (int j = 0; j < 60; j++)
+                    {
+                        String s = GetRandomAlphaNumeric();
+                        while ((s == "1") || (s == "2") || (s == "3") || (s == "4") || (s == "5") || (s == "6") || (s == "7") || (s == "8") || (s == "9") || (s == "0"))
+                        {
+                            s = GetRandomAlphaNumeric();
+                        }
+                        th[j] = s;
+                    }
+                  /*      Kouho[0, 0] = Kouho[bestfit1, 0]; Kouho[0, 1] = Kouho[bestfit1, 1]; Kouho[0, 2] = Kouho[bestfit1, 2]; Kouho[0, 3] = Kouho[bestfit1, 3];   //一点交叉 20%
+                        Kouho[1, 0] = Kouho[bestfit1, 0]; Kouho[1, 1] = Kouho[bestfit1, 1]; Kouho[1, 2] = Kouho[bestfit2, 2]; Kouho[1, 3] = Kouho[bestfit2, 3];
+                        Kouho[2, 0] = Kouho[bestfit2, 0]; Kouho[2, 1] = Kouho[bestfit2, 1]; Kouho[2, 2] = Kouho[bestfit1, 2]; Kouho[2, 3] = Kouho[bestfit1, 3];
+                        Kouho[3, 0] = Kouho[bestfit1, 2]; Kouho[3, 1] = Kouho[bestfit1, 3]; Kouho[3, 2] = Kouho[bestfit2, 0]; Kouho[3, 3] = Kouho[bestfit2, 1];
+                        Kouho[4, 0] = Kouho[bestfit2, 2]; Kouho[4, 1] = Kouho[bestfit2, 3]; Kouho[4, 2] = Kouho[bestfit1, 0]; Kouho[4, 3] = Kouho[bestfit1, 3];
+                        Kouho[5, 0] = th[5] ;             Kouho[5, 1] = Kouho[bestfit1, 1]; Kouho[5, 2] = Kouho[bestfit1, 2]; Kouho[5, 3] = Kouho[bestfit1, 3]; 
+                        Kouho[6, 0] = Kouho[bestfit1, 0]; Kouho[6, 1] = th[6];              Kouho[6, 2] = Kouho[bestfit1, 2]; Kouho[6, 3] = Kouho[bestfit1, 3]; 
+                        Kouho[7, 0] = Kouho[bestfit1, 0]; Kouho[7, 1] = Kouho[bestfit1, 1]; Kouho[7, 2] = th[7];              Kouho[7, 3] = Kouho[bestfit1, 3]; 
+                        Kouho[8, 0] = Kouho[bestfit1, 0]; Kouho[8, 1] = Kouho[bestfit1, 1]; Kouho[8, 2] = Kouho[bestfit1, 2]; Kouho[8, 3] = th[8]; 
+                        Kouho[9, 0] = th[9];    Kouho[9, 1] = th[10];      Kouho[9, 2] = th[11];    Kouho[9, 3] = th[12];                     */           
+
+                 /* Kouho[0, 0] = Kouho[bestfit1, 0]; Kouho[0, 1] = Kouho[bestfit1, 1]; Kouho[0, 2] = Kouho[bestfit1, 2]; Kouho[0, 3] = Kouho[bestfit1, 3];   //一点交叉 25%
+                  Kouho[1, 0] = Kouho[bestfit1, 0]; Kouho[1, 1] = Kouho[bestfit1, 1]; Kouho[1, 2] = Kouho[bestfit2, 2]; Kouho[1, 3] = Kouho[bestfit2, 3];
+                  Kouho[2, 0] = Kouho[bestfit2, 0]; Kouho[2, 1] = Kouho[bestfit2, 1]; Kouho[2, 2] = Kouho[bestfit1, 2]; Kouho[2, 3] = Kouho[bestfit1, 3];
+                  Kouho[3, 0] = Kouho[bestfit1, 2]; Kouho[3, 1] = Kouho[bestfit1, 3]; Kouho[3, 2] = Kouho[bestfit2, 0]; Kouho[3, 3] = Kouho[bestfit2, 1];
+                  Kouho[4, 0] = Kouho[bestfit2, 2]; Kouho[4, 1] = Kouho[bestfit2, 3]; Kouho[4, 2] = Kouho[bestfit1, 0]; Kouho[4, 3] = Kouho[bestfit1, 1];
+                  Kouho[5, 0] = th[0];              Kouho[5, 1] = Kouho[bestfit1, 1]; Kouho[5, 2] = th[5];              Kouho[5, 3] = Kouho[bestfit1, 3];
+                  Kouho[6, 0] = Kouho[bestfit1, 0]; Kouho[6, 1] = th[1];              Kouho[6, 2] = Kouho[bestfit1, 2]; Kouho[6, 3] = th[6]; 
+                  Kouho[7, 0] = th[2];              Kouho[7, 1] = Kouho[bestfit1, 1]; Kouho[7, 2] = th[7];              Kouho[7, 3] = Kouho[bestfit1, 3]; 
+                  Kouho[8, 0] = Kouho[bestfit1, 0]; Kouho[8, 1] = th[3];              Kouho[8, 2] = Kouho[bestfit1, 2]; Kouho[8, 3] = th[8]; 
+                  Kouho[9, 0] = th[4];              Kouho[9, 1] = Kouho[bestfit1, 1]; Kouho[9, 2] = th[9];              Kouho[9, 3] = Kouho[bestfit1, 3];       */
+
+                /*      Kouho[0, 0] = Kouho[bestfit1, 0]; Kouho[0, 1] = Kouho[bestfit1, 1]; Kouho[0, 2] = Kouho[bestfit1, 2]; Kouho[0, 3] = Kouho[bestfit1, 3];   //一点交叉 37.5%
+                      Kouho[1, 0] = Kouho[bestfit1, 0]; Kouho[1, 1] = Kouho[bestfit1, 1]; Kouho[1, 2] = Kouho[bestfit2, 2]; Kouho[1, 3] = Kouho[bestfit2, 3];
+                      Kouho[2, 0] = Kouho[bestfit2, 0]; Kouho[2, 1] = Kouho[bestfit2, 1]; Kouho[2, 2] = Kouho[bestfit1, 2]; Kouho[2, 3] = Kouho[bestfit1, 3];
+                      Kouho[3, 0] = Kouho[bestfit1, 2]; Kouho[3, 1] = Kouho[bestfit1, 3]; Kouho[3, 2] = Kouho[bestfit2, 0]; Kouho[3, 3] = Kouho[bestfit2, 1];
+                      Kouho[4, 0] = Kouho[bestfit2, 2]; Kouho[4, 1] = Kouho[bestfit2, 3]; Kouho[4, 2] = Kouho[bestfit1, 0]; Kouho[4, 3] = Kouho[bestfit1, 1];
+                      Kouho[5, 0] = Kouho[bestfit1, 0]; Kouho[5, 1] = th[0];              Kouho[5, 2] =  th[10];            Kouho[5, 3] = th[5]; 
+                      Kouho[6, 0] = th[1];              Kouho[6, 1] = Kouho[bestfit1, 1]; Kouho[6, 2] =  th[11];            Kouho[6, 3] = th[6]; 
+                      Kouho[7, 0] = th[8];              Kouho[7, 1] = th[2];              Kouho[7, 2] =  Kouho[bestfit1, 2];Kouho[7, 3] = th[7]; 
+                      Kouho[8, 0] = th[12];             Kouho[8, 1] = th[3];              Kouho[8, 2] =  th[13];            Kouho[8, 3] = Kouho[bestfit1, 3];
+                      Kouho[9, 0] = Kouho[bestfit1, 0]; Kouho[9, 1] = th[4];              Kouho[9, 2] =  th[14];            Kouho[9, 3] = th[9];                 */    
+
+               /* Kouho[0, 0] = Kouho[bestfit1, 0]; Kouho[0, 1] = Kouho[bestfit1, 1]; Kouho[0, 2] = Kouho[bestfit1, 2]; Kouho[0, 3] = Kouho[bestfit1, 3];   //一点交叉 50%
+                Kouho[1, 0] = Kouho[bestfit1, 0]; Kouho[1, 1] = Kouho[bestfit1, 1]; Kouho[1, 2] = Kouho[bestfit2, 2]; Kouho[1, 3] = Kouho[bestfit2, 3];
+                Kouho[2, 0] = Kouho[bestfit2, 0]; Kouho[2, 1] = Kouho[bestfit2, 1]; Kouho[2, 2] = Kouho[bestfit1, 2]; Kouho[2, 3] = Kouho[bestfit1, 3];
+                Kouho[3, 0] = Kouho[bestfit1, 2]; Kouho[3, 1] = Kouho[bestfit1, 3]; Kouho[3, 2] = Kouho[bestfit2, 0]; Kouho[3, 3] = Kouho[bestfit2, 1];
+                Kouho[4, 0] = Kouho[bestfit2, 2]; Kouho[4, 1] = Kouho[bestfit2, 3]; Kouho[4, 2] = Kouho[bestfit1, 0]; Kouho[4, 3] = Kouho[bestfit1, 1];
+                Kouho[5, 0] = th[10]; Kouho[5, 1] = th[0]; Kouho[5, 2] = th[15]; Kouho[5, 3] = th[5]; 
+                Kouho[6, 0] = th[11]; Kouho[6, 1] = th[1]; Kouho[6, 2] = th[16]; Kouho[6, 3] = th[6]; 
+                Kouho[7, 0] = th[12]; Kouho[7, 1] = th[2]; Kouho[7, 2] = th[17]; Kouho[7, 3] = th[7]; 
+                Kouho[8, 0] = th[13]; Kouho[8, 1] = th[3]; Kouho[8, 2] = th[18]; Kouho[8, 3] = th[8]; 
+                Kouho[9, 0] = th[14]; Kouho[9, 1] = th[4]; Kouho[9, 2] = th[19]; Kouho[9, 3] = th[9];  */
+
+
+
+
+
+
+                 /*    Kouho[0, 0] = Kouho[bestfit2, 3]; Kouho[0, 1] = Kouho[bestfit1, 1]; Kouho[0, 2] = Kouho[bestfit1, 2]; Kouho[0, 3] = Kouho[bestfit2, 0];   //二点交叉 20%
+                     Kouho[1, 0] = Kouho[bestfit1, 1]; Kouho[1, 1] = Kouho[bestfit1, 2]; Kouho[1, 2] = Kouho[bestfit2, 0]; Kouho[1, 3] = Kouho[bestfit2, 3];
+                     Kouho[2, 0] = Kouho[bestfit1, 1]; Kouho[2, 1] = Kouho[bestfit1, 2]; Kouho[2, 2] = Kouho[bestfit2, 3]; Kouho[2, 3] = Kouho[bestfit2, 0];
+                     Kouho[3, 0] = Kouho[bestfit2, 0]; Kouho[3, 1] = Kouho[bestfit2, 3]; Kouho[3, 2] = Kouho[bestfit1, 1]; Kouho[3, 3] = Kouho[bestfit1, 2];
+                     Kouho[4, 0] = Kouho[bestfit1, 3]; Kouho[4, 1] = Kouho[bestfit1, 0]; Kouho[4, 2] = Kouho[bestfit2, 1]; Kouho[4, 3] = Kouho[bestfit2, 2];
+                     Kouho[5, 0] = th[5] ;             Kouho[5, 1] = Kouho[bestfit1, 1]; Kouho[5, 2] = Kouho[bestfit1, 2]; Kouho[5, 3] = Kouho[bestfit1, 3]; 
+                     Kouho[6, 0] = Kouho[bestfit1, 0]; Kouho[6, 1] = th[6];              Kouho[6, 2] = Kouho[bestfit1, 2]; Kouho[6, 3] = Kouho[bestfit1, 3]; 
+                     Kouho[7, 0] = Kouho[bestfit1, 0]; Kouho[7, 1] = Kouho[bestfit1, 1]; Kouho[7, 2] = th[7];              Kouho[7, 3] = Kouho[bestfit1, 3]; 
+                     Kouho[8, 0] = Kouho[bestfit1, 0]; Kouho[8, 1] = Kouho[bestfit1, 1]; Kouho[8, 2] = Kouho[bestfit1, 2]; Kouho[8, 3] = th[8]; 
+                     Kouho[9, 0] = th[9];    Kouho[9, 1] = th[10];      Kouho[9, 2] = th[11];    Kouho[9, 3] = th[12];                           */
+
+
+               /*  Kouho[0, 0] = Kouho[bestfit2, 3]; Kouho[0, 1] = Kouho[bestfit1, 1]; Kouho[0, 2] = Kouho[bestfit1, 2]; Kouho[0, 3] = Kouho[bestfit2, 0];   //二点交叉 25%
+                 Kouho[1, 0] = Kouho[bestfit1, 1]; Kouho[1, 1] = Kouho[bestfit1, 2]; Kouho[1, 2] = Kouho[bestfit2, 0]; Kouho[1, 3] = Kouho[bestfit2, 3];
+                 Kouho[2, 0] = Kouho[bestfit1, 1]; Kouho[2, 1] = Kouho[bestfit1, 2]; Kouho[2, 2] = Kouho[bestfit2, 3]; Kouho[2, 3] = Kouho[bestfit2, 0];
+                 Kouho[3, 0] = Kouho[bestfit2, 0]; Kouho[3, 1] = Kouho[bestfit2, 3]; Kouho[3, 2] = Kouho[bestfit1, 1]; Kouho[3, 3] = Kouho[bestfit1, 2];
+                 Kouho[4, 0] = Kouho[bestfit1, 3]; Kouho[4, 1] = Kouho[bestfit1, 0]; Kouho[4, 2] = Kouho[bestfit2, 1]; Kouho[4, 3] = Kouho[bestfit2, 2];
+                 Kouho[5, 0] = th[0];              Kouho[5, 1] = Kouho[bestfit1, 1]; Kouho[5, 2] = th[5];              Kouho[5, 3] = Kouho[bestfit1, 3];
+                 Kouho[6, 0] = Kouho[bestfit1, 0]; Kouho[6, 1] = th[1];              Kouho[6, 2] = Kouho[bestfit1, 2]; Kouho[6, 3] = th[6]; 
+                 Kouho[7, 0] = th[2];              Kouho[7, 1] = Kouho[bestfit1, 1]; Kouho[7, 2] = th[7];              Kouho[7, 3] = Kouho[bestfit1, 3]; 
+                 Kouho[8, 0] = Kouho[bestfit1, 0]; Kouho[8, 1] = th[3];              Kouho[8, 2] = Kouho[bestfit1, 2]; Kouho[8, 3] = th[8]; 
+                 Kouho[9, 0] = th[4];              Kouho[9, 1] = Kouho[bestfit1, 1]; Kouho[9, 2] = th[9];              Kouho[9, 3] = Kouho[bestfit1, 3];   */
+
+                 /*    Kouho[0, 0] = Kouho[bestfit2, 3]; Kouho[0, 1] = Kouho[bestfit1, 1]; Kouho[0, 2] = Kouho[bestfit1, 2]; Kouho[0, 3] = Kouho[bestfit2, 0];   //二点交叉 37.5%
+                     Kouho[1, 0] = Kouho[bestfit1, 1]; Kouho[1, 1] = Kouho[bestfit1, 2]; Kouho[1, 2] = Kouho[bestfit2, 0]; Kouho[1, 3] = Kouho[bestfit2, 3];
+                     Kouho[2, 0] = Kouho[bestfit1, 1]; Kouho[2, 1] = Kouho[bestfit1, 2]; Kouho[2, 2] = Kouho[bestfit2, 3]; Kouho[2, 3] = Kouho[bestfit2, 0];
+                     Kouho[3, 0] = Kouho[bestfit2, 0]; Kouho[3, 1] = Kouho[bestfit2, 3]; Kouho[3, 2] = Kouho[bestfit1, 1]; Kouho[3, 3] = Kouho[bestfit1, 2];
+                     Kouho[4, 0] = Kouho[bestfit1, 3]; Kouho[4, 1] = Kouho[bestfit1, 0]; Kouho[4, 2] = Kouho[bestfit2, 1]; Kouho[4, 3] = Kouho[bestfit2, 2];
+                     Kouho[5, 0] = Kouho[bestfit1, 0]; Kouho[5, 1] = th[0];              Kouho[5, 2] =  th[10];            Kouho[5, 3] = th[5]; 
+                      Kouho[6, 0] = th[1];              Kouho[6, 1] = Kouho[bestfit1, 1]; Kouho[6, 2] =  th[11];            Kouho[6, 3] = th[6]; 
+                      Kouho[7, 0] = th[8];              Kouho[7, 1] = th[2];              Kouho[7, 2] =  Kouho[bestfit1, 2];Kouho[7, 3] = th[7]; 
+                      Kouho[8, 0] = th[12];             Kouho[8, 1] = th[3];              Kouho[8, 2] =  th[13];            Kouho[8, 3] = Kouho[bestfit1, 3];
+                      Kouho[9, 0] = Kouho[bestfit1, 0]; Kouho[9, 1] = th[4];              Kouho[9, 2] =  th[14];            Kouho[9, 3] = th[9];          */
+
+                 /*   Kouho[0, 0] = Kouho[bestfit2, 3]; Kouho[0, 1] = Kouho[bestfit1, 1]; Kouho[0, 2] = Kouho[bestfit1, 2]; Kouho[0, 3] = Kouho[bestfit2, 0];   //二点交叉 50%
+                    Kouho[1, 0] = Kouho[bestfit1, 1]; Kouho[1, 1] = Kouho[bestfit1, 2]; Kouho[1, 2] = Kouho[bestfit2, 0]; Kouho[1, 3] = Kouho[bestfit2, 3];
+                    Kouho[2, 0] = Kouho[bestfit1, 1]; Kouho[2, 1] = Kouho[bestfit1, 2]; Kouho[2, 2] = Kouho[bestfit2, 3]; Kouho[2, 3] = Kouho[bestfit2, 0];
+                    Kouho[3, 0] = Kouho[bestfit2, 0]; Kouho[3, 1] = Kouho[bestfit2, 3]; Kouho[3, 2] = Kouho[bestfit1, 1]; Kouho[3, 3] = Kouho[bestfit1, 2];
+                    Kouho[4, 0] = Kouho[bestfit1, 3]; Kouho[4, 1] = Kouho[bestfit1, 0]; Kouho[4, 2] = Kouho[bestfit2, 1]; Kouho[4, 3] = Kouho[bestfit2, 2];
+                    Kouho[5, 0] = th[10]; Kouho[5, 1] = th[0]; Kouho[5, 2] = th[15]; Kouho[5, 3] = th[5]; 
+                    Kouho[6, 0] = th[11]; Kouho[6, 1] = th[1]; Kouho[6, 2] = th[16]; Kouho[6, 3] = th[6]; 
+                    Kouho[7, 0] = th[12]; Kouho[7, 1] = th[2]; Kouho[7, 2] = th[17]; Kouho[7, 3] = th[7]; 
+                    Kouho[8, 0] = th[13]; Kouho[8, 1] = th[3]; Kouho[8, 2] = th[18]; Kouho[8, 3] = th[8]; 
+                    Kouho[9, 0] = th[14]; Kouho[9, 1] = th[4]; Kouho[9, 2] = th[19]; Kouho[9, 3] = th[9];    */
+
+
+
+               /*       Kouho[0, 0] = Kouho[bestfit1, 0]; Kouho[0, 1] = Kouho[bestfit2, 1]; Kouho[0, 2] = Kouho[bestfit1, 2]; Kouho[0, 3] = Kouho[bestfit2, 3]; //一様交叉＆多点交叉
+                      Kouho[1, 0] = Kouho[bestfit2, 0]; Kouho[1, 1] = Kouho[bestfit1, 1]; Kouho[1, 2] = Kouho[bestfit2, 2]; Kouho[1, 3] = Kouho[bestfit1, 3];
+                      Kouho[2, 0] = Kouho[bestfit1, 0]; Kouho[2, 1] = Kouho[bestfit1, 1]; Kouho[2, 2] = Kouho[bestfit1, 2]; Kouho[2, 3] = Kouho[bestfit2, 3];
+                      Kouho[3, 0] = Kouho[bestfit1, 0]; Kouho[3, 1] = Kouho[bestfit1, 1]; Kouho[3, 2] = Kouho[bestfit2, 2]; Kouho[3, 3] = Kouho[bestfit2, 3];
+                      Kouho[4, 0] = Kouho[bestfit1, 0]; Kouho[4, 1] = Kouho[bestfit2, 1]; Kouho[4, 2] = Kouho[bestfit2, 2]; Kouho[4, 3] = Kouho[bestfit2, 3];
+                      Kouho[5, 0] = th[5] ;             Kouho[5, 1] = Kouho[bestfit1, 1]; Kouho[5, 2] = Kouho[bestfit1, 2]; Kouho[5, 3] = Kouho[bestfit1, 3]; 
+                      Kouho[6, 0] = Kouho[bestfit1, 0]; Kouho[6, 1] = th[6];              Kouho[6, 2] = Kouho[bestfit1, 2]; Kouho[6, 3] = Kouho[bestfit1, 3]; 
+                      Kouho[7, 0] = Kouho[bestfit1, 0]; Kouho[7, 1] = Kouho[bestfit1, 1]; Kouho[7, 2] = th[7];              Kouho[7, 3] = Kouho[bestfit1, 3]; 
+                      Kouho[8, 0] = Kouho[bestfit1, 0]; Kouho[8, 1] = Kouho[bestfit1, 1]; Kouho[8, 2] = Kouho[bestfit1, 2]; Kouho[8, 3] = th[8]; 
+                      Kouho[9, 0] = th[9];    Kouho[9, 1] = th[10];      Kouho[9, 2] = th[11];    Kouho[9, 3] = th[12];                     */
+
+                  /* Kouho[0, 0] = Kouho[bestfit1, 0]; Kouho[0, 1] = Kouho[bestfit2, 1]; Kouho[0, 2] = Kouho[bestfit1, 2]; Kouho[0, 3] = Kouho[bestfit2, 3]; //一様交叉＆多点交叉
+                   Kouho[1, 0] = Kouho[bestfit2, 0]; Kouho[1, 1] = Kouho[bestfit1, 1]; Kouho[1, 2] = Kouho[bestfit2, 2]; Kouho[1, 3] = Kouho[bestfit1, 3];
+                   Kouho[2, 0] = Kouho[bestfit1, 0]; Kouho[2, 1] = Kouho[bestfit1, 1]; Kouho[2, 2] = Kouho[bestfit1, 2]; Kouho[2, 3] = Kouho[bestfit2, 3];
+                   Kouho[3, 0] = Kouho[bestfit1, 0]; Kouho[3, 1] = Kouho[bestfit1, 1]; Kouho[3, 2] = Kouho[bestfit2, 2]; Kouho[3, 3] = Kouho[bestfit2, 3];
+                   Kouho[4, 0] = Kouho[bestfit1, 0]; Kouho[4, 1] = Kouho[bestfit2, 1]; Kouho[4, 2] = Kouho[bestfit2, 2]; Kouho[4, 3] = Kouho[bestfit2, 3];
+                   Kouho[5, 0] = th[0]; Kouho[5, 1] = Kouho[bestfit1, 1]; Kouho[5, 2] = th[5]; Kouho[5, 3] = Kouho[bestfit1, 3];
+                   Kouho[6, 0] = Kouho[bestfit1, 0]; Kouho[6, 1] = th[1]; Kouho[6, 2] = Kouho[bestfit1, 2]; Kouho[6, 3] = th[6];
+                   Kouho[7, 0] = th[2]; Kouho[7, 1] = Kouho[bestfit1, 1]; Kouho[7, 2] = th[7]; Kouho[7, 3] = Kouho[bestfit1, 3];
+                   Kouho[8, 0] = Kouho[bestfit1, 0]; Kouho[8, 1] = th[3]; Kouho[8, 2] = Kouho[bestfit1, 2]; Kouho[8, 3] = th[8];
+                   Kouho[9, 0] = th[4]; Kouho[9, 1] = Kouho[bestfit1, 1]; Kouho[9, 2] = th[9]; Kouho[9, 3] = Kouho[bestfit1, 3];        */
+
+              /*    Kouho[0, 0] = Kouho[bestfit1, 0]; Kouho[0, 1] = Kouho[bestfit2, 1]; Kouho[0, 2] = Kouho[bestfit1, 2]; Kouho[0, 3] = Kouho[bestfit2, 3]; //一様交叉＆多点交叉
+                  Kouho[1, 0] = Kouho[bestfit2, 0]; Kouho[1, 1] = Kouho[bestfit1, 1]; Kouho[1, 2] = Kouho[bestfit2, 2]; Kouho[1, 3] = Kouho[bestfit1, 3];
+                  Kouho[2, 0] = Kouho[bestfit1, 0]; Kouho[2, 1] = Kouho[bestfit1, 1]; Kouho[2, 2] = Kouho[bestfit1, 2]; Kouho[2, 3] = Kouho[bestfit2, 3];
+                  Kouho[3, 0] = Kouho[bestfit1, 0]; Kouho[3, 1] = Kouho[bestfit1, 1]; Kouho[3, 2] = Kouho[bestfit2, 2]; Kouho[3, 3] = Kouho[bestfit2, 3];
+                  Kouho[4, 0] = Kouho[bestfit1, 0]; Kouho[4, 1] = Kouho[bestfit2, 1]; Kouho[4, 2] = Kouho[bestfit2, 2]; Kouho[4, 3] = Kouho[bestfit2, 3];
+                  Kouho[5, 0] = Kouho[bestfit1, 0]; Kouho[5, 1] = th[0];              Kouho[5, 2] =  th[10];            Kouho[5, 3] = th[5]; 
+                      Kouho[6, 0] = th[1];              Kouho[6, 1] = Kouho[bestfit1, 1]; Kouho[6, 2] =  th[11];            Kouho[6, 3] = th[6]; 
+                      Kouho[7, 0] = th[8];              Kouho[7, 1] = th[2];              Kouho[7, 2] =  Kouho[bestfit1, 2];Kouho[7, 3] = th[7]; 
+                      Kouho[8, 0] = th[12];             Kouho[8, 1] = th[3];              Kouho[8, 2] =  th[13];            Kouho[8, 3] = Kouho[bestfit1, 3];
+                      Kouho[9, 0] = Kouho[bestfit1, 0]; Kouho[9, 1] = th[4];              Kouho[9, 2] =  th[14];            Kouho[9, 3] = th[9];     */                
+
+                    /*   Kouho[0, 0] = Kouho[bestfit1, 0]; Kouho[0, 1] = Kouho[bestfit2, 1]; Kouho[0, 2] = Kouho[bestfit1, 2]; Kouho[0, 3] = Kouho[bestfit2, 3]; //一様交叉＆多点交叉
+                       Kouho[1, 0] = Kouho[bestfit2, 0]; Kouho[1, 1] = Kouho[bestfit1, 1]; Kouho[1, 2] = Kouho[bestfit2, 2]; Kouho[1, 3] = Kouho[bestfit1, 3];
+                       Kouho[2, 0] = Kouho[bestfit1, 0]; Kouho[2, 1] = Kouho[bestfit1, 1]; Kouho[2, 2] = Kouho[bestfit1, 2]; Kouho[2, 3] = Kouho[bestfit2, 3];
+                       Kouho[3, 0] = Kouho[bestfit1, 0]; Kouho[3, 1] = Kouho[bestfit1, 1]; Kouho[3, 2] = Kouho[bestfit2, 2]; Kouho[3, 3] = Kouho[bestfit2, 3];
+                       Kouho[4, 0] = Kouho[bestfit1, 0]; Kouho[4, 1] = Kouho[bestfit2, 1]; Kouho[4, 2] = Kouho[bestfit2, 2]; Kouho[4, 3] = Kouho[bestfit2, 3];
+                       Kouho[5, 0] = th[10]; Kouho[5, 1] = th[0]; Kouho[5, 2] = th[15]; Kouho[5, 3] = th[5]; 
+                       Kouho[6, 0] = th[11]; Kouho[6, 1] = th[1]; Kouho[6, 2] = th[16]; Kouho[6, 3] = th[6]; 
+                       Kouho[7, 0] = th[12]; Kouho[7, 1] = th[2]; Kouho[7, 2] = th[17]; Kouho[7, 3] = th[7]; 
+                       Kouho[8, 0] = th[13]; Kouho[8, 1] = th[3]; Kouho[8, 2] = th[18]; Kouho[8, 3] = th[8]; 
+                       Kouho[9, 0] = th[14]; Kouho[9, 1] = th[4]; Kouho[9, 2] = th[19]; Kouho[9, 3] = th[9];  */
+
+
+            /* for (int i = 5; i < 10; i++)
+             {
+                 for (int j = 0; j < 4; j++)
+                 {
+                     String s = GetRandomAlphaNumeric();
+                     while ((s == "1") || (s == "2") || (s == "3") || (s == "4") || (s == "5") || (s == "6") || (s == "7") || (s == "8") || (s == "9") || (s == "0"))
+                     {
+                         s = GetRandomAlphaNumeric();
+                     }
+                     Kouho[i, j] = s;
+                 }
+             }*/
+
+
+
+
+
+
+
+
+
+            /////////////////////////////////////////////////////////////////////////////////////////////////LENGTH@5///////////////////////////////////////////////////////////////////////////////////////////
+
+
+            string[] Answer = new string[5]; //答えを配列化（"uwano"）
+            Answer[0] = "l";
+            Answer[1] = "o";
+            Answer[2] = "v";
+            Answer[3] = "e";
+            Answer[4] = "i";
+
+            int length = 4;
+
+            bool endflag = false;
+            int sedai = 0;
+            String[,] Kouho = new string[10, length]; //一世代の10個体
+
+            for (int i = 0; i < 10; i++)    //1世代分をランダムで生成
+            {
+                for (int j = 0; j < length; j++)
+                {
+                    String s = GetRandomAlphaNumeric();
+                    while ((s == "1") || (s == "2") || (s == "3") || (s == "4") || (s == "5") || (s == "6") || (s == "7") || (s == "8") || (s == "9") || (s == "0"))
+                    {
+                        s = GetRandomAlphaNumeric();
+                    }
+                    Kouho[i, j] = s;
+                }
+            }
+
+            while (endflag != true)
+            {
+                int[] fit = new int[10];
+
+                ///////////////////////////////////////////////////////////////////////////////////////
+                //今回の適合度の判定方法：場所、文字一致で10点、文字一致,場所不一致で５点で評価する。//
+                ///////////////////////////////////////////////////////////////////////////////////////
+
+                for (int i = 0; i < 10; i++) //適合度評価開始
+                {
+                    for (int j = 0; j < length; j++)
+                    {
+                        if (Answer[j] == Kouho[i, j]) fit[i] = fit[i] + 10; //場所、文字一致で10点
+                        if (((j != 0) && (Answer[0] == Kouho[i, j])) || ((j != 1) && (Answer[1] == Kouho[i, j])) || ((j != 2) && (Answer[2] == Kouho[i, j])) || ((j != 3) && (Answer[3] == Kouho[i, j])) || ((j != 4) && (Answer[4] == Kouho[i, j]))) fit[i] = fit[i] + 5; //文字一致,場所不一致で５点
+                    }
+                    if (fit[i] == 50)
+                    {
+                        endflag = true;
+                    }//終了判定
+                }
+
+
+
+                int bestfit1 = 0;  //適合度第1位
+                int bestfit2 = 0; //適合度第2位
+
+                for (int i = 0; i < 10; i++)   //適合度判定
+                {
+                    if (fit[i] >= fit[bestfit2] || ((fit[i] != fit[bestfit1]) && (fit[i] >= 20)))
+                    {
+                        bestfit2 = i;
+
+
+                        if (fit[bestfit1] < fit[bestfit2])
+                        {
+                            int a = bestfit1;
+                            bestfit1 = bestfit2;
+                            bestfit2 = a;
+                        }
+                    }
+
+                }
+
+
+
+
+                for (int i = 0; i < 10; i++) //表示
+                {
+                    Console.WriteLine(sedai + "世代:" + Kouho[i, 0] + Kouho[i, 1] + Kouho[i, 2] + Kouho[i, 3] + Kouho[i, 4] + "\t" + "適合度:" + fit[i]);
+                }
+                Console.WriteLine(" ");
+                Console.WriteLine(sedai + "世代の適合度 第1位:" + Kouho[bestfit1, 0] + Kouho[bestfit1, 1] + Kouho[bestfit1, 2] + Kouho[bestfit1, 3] + Kouho[bestfit1, 4]);
+                Console.WriteLine(sedai + "世代の適合度 第2位:" + Kouho[bestfit2, 0] + Kouho[bestfit2, 1] + Kouho[bestfit2, 2] + Kouho[bestfit2, 3] + Kouho[bestfit2, 4]);
+                Console.WriteLine("-------------------------------");
+                Console.WriteLine(" ");
+                sedai = sedai + 1;
+
+                string[] th = new string[60];
+
+                for (int j = 0; j < 60; j++)
+                {
+                    String s = GetRandomAlphaNumeric();
+                    while ((s == "1") || (s == "2") || (s == "3") || (s == "4") || (s == "5") || (s == "6") || (s == "7") || (s == "8") || (s == "9") || (s == "0"))
+                    {
+                        s = GetRandomAlphaNumeric();
+                    }
+                    th[j] = s;
+                }
+                   Kouho[0, 0] = Kouho[bestfit1, 0]; Kouho[0, 1] = Kouho[bestfit1, 1]; Kouho[0, 2] = Kouho[bestfit1, 2]; Kouho[0, 3] = Kouho[bestfit1, 3]; Kouho[0, 4] = Kouho[bestfit1, 4]; //一点交叉 20%
+                   Kouho[1, 0] = Kouho[bestfit1, 0]; Kouho[1, 1] = Kouho[bestfit1, 1]; Kouho[1, 2] = Kouho[bestfit2, 2]; Kouho[1, 3] = Kouho[bestfit2, 3]; Kouho[1, 4] = Kouho[bestfit2, 4];
+                   Kouho[2, 0] = Kouho[bestfit2, 0]; Kouho[2, 1] = Kouho[bestfit2, 1]; Kouho[2, 2] = Kouho[bestfit1, 2]; Kouho[2, 3] = Kouho[bestfit1, 3]; Kouho[2, 4] = Kouho[bestfit1, 4];
+                   Kouho[3, 0] = Kouho[bestfit1, 2]; Kouho[3, 1] = Kouho[bestfit1, 3]; Kouho[3, 2] = Kouho[bestfit2, 4]; Kouho[3, 3] = Kouho[bestfit2, 0]; Kouho[3, 4] = Kouho[bestfit1, 1];
+                   Kouho[4, 0] = Kouho[bestfit2, 2]; Kouho[4, 1] = Kouho[bestfit2, 3]; Kouho[4, 2] = Kouho[bestfit1, 4]; Kouho[4, 3] = Kouho[bestfit1, 0]; Kouho[4, 4] = Kouho[bestfit1, 1];
+                   Kouho[5, 0] = th[5] ;             Kouho[5, 1] = Kouho[bestfit1, 1]; Kouho[5, 2] = Kouho[bestfit1, 2]; Kouho[5, 3] = Kouho[bestfit1, 3]; Kouho[5, 4] = Kouho[bestfit1, 4];
+                   Kouho[6, 0] = Kouho[bestfit1, 0]; Kouho[6, 1] = th[6];              Kouho[6, 2] = Kouho[bestfit1, 2]; Kouho[6, 3] = Kouho[bestfit1, 3]; Kouho[6, 4] = Kouho[bestfit1, 4];
+                   Kouho[7, 0] = Kouho[bestfit1, 0]; Kouho[7, 1] = Kouho[bestfit1, 1]; Kouho[7, 2] = th[7];              Kouho[7, 3] = Kouho[bestfit1, 3]; Kouho[7, 4] = Kouho[bestfit1, 4];
+                   Kouho[8, 0] = Kouho[bestfit1, 0]; Kouho[8, 1] = Kouho[bestfit1, 1]; Kouho[8, 2] = Kouho[bestfit1, 2]; Kouho[8, 3] = th[8];              Kouho[8, 4] = th[13];
+                   Kouho[9, 0] = th[9];              Kouho[9, 1] = th[10];             Kouho[9, 2] = th[11];             Kouho[9, 3] = th[12];             Kouho[9, 4] = th[14];             
+
+                 /*   Kouho[0, 0] = Kouho[bestfit1, 0]; Kouho[0, 1] = Kouho[bestfit1, 1]; Kouho[0, 2] = Kouho[bestfit1, 2]; Kouho[0, 3] = Kouho[bestfit1, 3]; Kouho[0, 4] = Kouho[bestfit1, 4]; //一点交叉 25%
+                    Kouho[1, 0] = Kouho[bestfit1, 0]; Kouho[1, 1] = Kouho[bestfit1, 1]; Kouho[1, 2] = Kouho[bestfit2, 2]; Kouho[1, 3] = Kouho[bestfit2, 3]; Kouho[1, 4] = Kouho[bestfit2, 4];
+                    Kouho[2, 0] = Kouho[bestfit2, 0]; Kouho[2, 1] = Kouho[bestfit2, 1]; Kouho[2, 2] = Kouho[bestfit1, 2]; Kouho[2, 3] = Kouho[bestfit1, 3]; Kouho[2, 4] = Kouho[bestfit1, 4];
+                    Kouho[3, 0] = Kouho[bestfit1, 2]; Kouho[3, 1] = Kouho[bestfit1, 3]; Kouho[3, 2] = Kouho[bestfit2, 4]; Kouho[3, 3] = Kouho[bestfit2, 0]; Kouho[3, 4] = Kouho[bestfit1, 1];
+                    Kouho[4, 0] = Kouho[bestfit2, 2]; Kouho[4, 1] = Kouho[bestfit2, 3]; Kouho[4, 2] = Kouho[bestfit1, 4]; Kouho[4, 3] = Kouho[bestfit1, 0]; Kouho[4, 4] = Kouho[bestfit1, 1];
+                    Kouho[5, 0] = th[0];              Kouho[5, 1] = Kouho[bestfit1, 1]; Kouho[5, 2] = th[5];              Kouho[5, 3] = Kouho[bestfit1, 3]; Kouho[5, 4] = th[10];
+                    Kouho[6, 0] = Kouho[bestfit1, 0]; Kouho[6, 1] = th[1];              Kouho[6, 2] = Kouho[bestfit1, 2]; Kouho[6, 3] = th[6];              Kouho[6, 4] = Kouho[bestfit1, 4];
+                    Kouho[7, 0] = th[2];              Kouho[7, 1] = Kouho[bestfit1, 1]; Kouho[7, 2] = th[7];              Kouho[7, 3] = Kouho[bestfit1, 3]; Kouho[7, 4] = th[11];
+                    Kouho[8, 0] = Kouho[bestfit1, 0]; Kouho[8, 1] = th[3];              Kouho[8, 2] = Kouho[bestfit1, 2]; Kouho[8, 3] = th[8];              Kouho[8, 4] = Kouho[bestfit1, 4];
+                    Kouho[9, 0] = th[4];              Kouho[9, 1] = Kouho[bestfit1, 1]; Kouho[9, 2] = th[9];              Kouho[9, 3] = Kouho[bestfit1, 3]; Kouho[9, 4] = th[12];     */
+
+               /*      Kouho[0, 0] = Kouho[bestfit1, 0]; Kouho[0, 1] = Kouho[bestfit1, 1]; Kouho[0, 2] = Kouho[bestfit1, 2]; Kouho[0, 3] = Kouho[bestfit1, 3]; Kouho[0, 4] = Kouho[bestfit1, 4]; //一点交叉 37.5%
+                     Kouho[1, 0] = Kouho[bestfit1, 0]; Kouho[1, 1] = Kouho[bestfit1, 1]; Kouho[1, 2] = Kouho[bestfit2, 2]; Kouho[1, 3] = Kouho[bestfit2, 3]; Kouho[1, 4] = Kouho[bestfit2, 4];
+                     Kouho[2, 0] = Kouho[bestfit2, 0]; Kouho[2, 1] = Kouho[bestfit2, 1]; Kouho[2, 2] = Kouho[bestfit1, 2]; Kouho[2, 3] = Kouho[bestfit1, 3]; Kouho[2, 4] = Kouho[bestfit1, 4];
+                     Kouho[3, 0] = Kouho[bestfit1, 2]; Kouho[3, 1] = Kouho[bestfit1, 3]; Kouho[3, 2] = Kouho[bestfit2, 4]; Kouho[3, 3] = Kouho[bestfit2, 0]; Kouho[3, 4] = Kouho[bestfit1, 1];
+                     Kouho[4, 0] = Kouho[bestfit2, 2]; Kouho[4, 1] = Kouho[bestfit2, 3]; Kouho[4, 2] = Kouho[bestfit1, 4]; Kouho[4, 3] = Kouho[bestfit1, 0]; Kouho[4, 4] = Kouho[bestfit1, 1];
+                     Kouho[5, 0] = Kouho[bestfit1, 0]; Kouho[5, 1] = th[0];              Kouho[5, 2] =  th[10];            Kouho[5, 3] = th[5];                Kouho[5, 4] = th[15]; 
+                     Kouho[6, 0] = th[1];              Kouho[6, 1] = Kouho[bestfit1, 1]; Kouho[6, 2] =  th[11];            Kouho[6, 3] = th[6];                Kouho[6, 4] = th[16];         
+                     Kouho[7, 0] = th[8];              Kouho[7, 1] = th[2];              Kouho[7, 2] =  Kouho[bestfit1, 2];Kouho[7, 3] = th[7];                Kouho[7, 4] = th[17]; 
+                     Kouho[8, 0] = th[12];             Kouho[8, 1] = th[3];              Kouho[8, 2] =  th[13];            Kouho[8, 3] = Kouho[bestfit1, 3];   Kouho[8, 4] = th[18]; 
+                     Kouho[9, 0] = Kouho[bestfit1, 0]; Kouho[9, 1] = th[4];              Kouho[9, 2] =  th[14];            Kouho[9, 3] = th[9];                Kouho[9, 4] = Kouho[bestfit1, 4];     */
+
+                /*    Kouho[0, 0] = Kouho[bestfit1, 0]; Kouho[0, 1] = Kouho[bestfit1, 1]; Kouho[0, 2] = Kouho[bestfit1, 2]; Kouho[0, 3] = Kouho[bestfit1, 3]; Kouho[0, 4] = Kouho[bestfit1, 4]; //一点交叉 50%
+                      Kouho[1, 0] = Kouho[bestfit1, 0]; Kouho[1, 1] = Kouho[bestfit1, 1]; Kouho[1, 2] = Kouho[bestfit2, 2]; Kouho[1, 3] = Kouho[bestfit2, 3]; Kouho[1, 4] = Kouho[bestfit2, 4];
+                      Kouho[2, 0] = Kouho[bestfit2, 0]; Kouho[2, 1] = Kouho[bestfit2, 1]; Kouho[2, 2] = Kouho[bestfit1, 2]; Kouho[2, 3] = Kouho[bestfit1, 3]; Kouho[2, 4] = Kouho[bestfit1, 4];
+                      Kouho[3, 0] = Kouho[bestfit1, 2]; Kouho[3, 1] = Kouho[bestfit1, 3]; Kouho[3, 2] = Kouho[bestfit2, 4]; Kouho[3, 3] = Kouho[bestfit2, 0]; Kouho[3, 4] = Kouho[bestfit1, 1];
+                      Kouho[4, 0] = Kouho[bestfit2, 2]; Kouho[4, 1] = Kouho[bestfit2, 3]; Kouho[4, 2] = Kouho[bestfit1, 4]; Kouho[4, 3] = Kouho[bestfit1, 0]; Kouho[4, 4] = Kouho[bestfit1, 1];
+                      Kouho[5, 0] = th[10]; Kouho[5, 1] = th[0]; Kouho[5, 2] = th[15]; Kouho[5, 3] = th[5]; Kouho[5, 4] = th[20];
+                      Kouho[6, 0] = th[11]; Kouho[6, 1] = th[1]; Kouho[6, 2] = th[16]; Kouho[6, 3] = th[6]; Kouho[6, 4] = th[21];
+                      Kouho[7, 0] = th[12]; Kouho[7, 1] = th[2]; Kouho[7, 2] = th[17]; Kouho[7, 3] = th[7]; Kouho[7, 4] = th[22];
+                      Kouho[8, 0] = th[13]; Kouho[8, 1] = th[3]; Kouho[8, 2] = th[18]; Kouho[8, 3] = th[8]; Kouho[8, 4] = th[23];
+                      Kouho[9, 0] = th[14]; Kouho[9, 1] = th[4]; Kouho[9, 2] = th[19]; Kouho[9, 3] = th[9]; Kouho[9, 4] = th[24];    */
+
+
+
+
+
+
+                 /*  Kouho[0, 0] = Kouho[bestfit1, 0]; Kouho[0, 1] = Kouho[bestfit2, 3]; Kouho[0, 2] = Kouho[bestfit2, 4]; Kouho[0, 3] = Kouho[bestfit1, 1]; Kouho[0, 4] = Kouho[bestfit1, 2]; //2点交叉 20%
+                   Kouho[1, 0] = Kouho[bestfit1, 0]; Kouho[1, 1] = Kouho[bestfit1, 1]; Kouho[1, 2] = Kouho[bestfit1, 2]; Kouho[1, 3] = Kouho[bestfit2, 3]; Kouho[1, 4] = Kouho[bestfit2, 4];
+                   Kouho[2, 0] = Kouho[bestfit1, 3]; Kouho[2, 1] = Kouho[bestfit1, 4]; Kouho[2, 2] = Kouho[bestfit1, 0]; Kouho[2, 3] = Kouho[bestfit2, 1]; Kouho[2, 4] = Kouho[bestfit2, 2];
+                   Kouho[3, 0] = Kouho[bestfit2, 1]; Kouho[3, 1] = Kouho[bestfit2, 2]; Kouho[3, 2] = Kouho[bestfit1, 3]; Kouho[3, 3] = Kouho[bestfit1, 4]; Kouho[3, 4] = Kouho[bestfit1, 0];
+                   Kouho[4, 0] = Kouho[bestfit2, 1]; Kouho[4, 1] = Kouho[bestfit2, 2]; Kouho[4, 2] = Kouho[bestfit1, 0]; Kouho[4, 3] = Kouho[bestfit1, 3]; Kouho[4, 4] = Kouho[bestfit1, 4];
+                   Kouho[5, 0] = th[5] ;             Kouho[5, 1] = Kouho[bestfit1, 1]; Kouho[5, 2] = Kouho[bestfit1, 2]; Kouho[5, 3] = Kouho[bestfit1, 3]; Kouho[5, 4] = Kouho[bestfit1, 4];
+                   Kouho[6, 0] = Kouho[bestfit1, 0]; Kouho[6, 1] = th[6];              Kouho[6, 2] = Kouho[bestfit1, 2]; Kouho[6, 3] = Kouho[bestfit1, 3]; Kouho[6, 4] = Kouho[bestfit1, 4];
+                   Kouho[7, 0] = Kouho[bestfit1, 0]; Kouho[7, 1] = Kouho[bestfit1, 1]; Kouho[7, 2] = th[7];              Kouho[7, 3] = Kouho[bestfit1, 3]; Kouho[7, 4] = Kouho[bestfit1, 4];
+                   Kouho[8, 0] = Kouho[bestfit1, 0]; Kouho[8, 1] = Kouho[bestfit1, 1]; Kouho[8, 2] = Kouho[bestfit1, 2]; Kouho[8, 3] = th[8];              Kouho[8, 4] = th[13];
+                   Kouho[9, 0] = th[9];              Kouho[9, 1] = th[10];             Kouho[9, 2] = th[11];             Kouho[9, 3] = th[12];             Kouho[9, 4] = th[14]; */     
+
+
+                       /*  Kouho[0, 0] = Kouho[bestfit1, 0]; Kouho[0, 1] = Kouho[bestfit2, 3]; Kouho[0, 2] = Kouho[bestfit2, 4]; Kouho[0, 3] = Kouho[bestfit1, 1]; Kouho[0, 4] = Kouho[bestfit1, 2]; //2点交叉 25%
+                         Kouho[1, 0] = Kouho[bestfit1, 0]; Kouho[1, 1] = Kouho[bestfit1, 1]; Kouho[1, 2] = Kouho[bestfit1, 2]; Kouho[1, 3] = Kouho[bestfit2, 3]; Kouho[1, 4] = Kouho[bestfit2, 4];
+                         Kouho[2, 0] = Kouho[bestfit1, 3]; Kouho[2, 1] = Kouho[bestfit1, 4]; Kouho[2, 2] = Kouho[bestfit1, 0]; Kouho[2, 3] = Kouho[bestfit2, 1]; Kouho[2, 4] = Kouho[bestfit2, 2];
+                         Kouho[3, 0] = Kouho[bestfit2, 1]; Kouho[3, 1] = Kouho[bestfit2, 2]; Kouho[3, 2] = Kouho[bestfit1, 3]; Kouho[3, 3] = Kouho[bestfit1, 4]; Kouho[3, 4] = Kouho[bestfit1, 0];
+                         Kouho[4, 0] = Kouho[bestfit2, 1]; Kouho[4, 1] = Kouho[bestfit2, 2]; Kouho[4, 2] = Kouho[bestfit1, 0]; Kouho[4, 3] = Kouho[bestfit1, 3]; Kouho[4, 4] = Kouho[bestfit1, 4];
+                         Kouho[5, 0] = th[0];              Kouho[5, 1] = Kouho[bestfit1, 1]; Kouho[5, 2] = th[5];              Kouho[5, 3] = Kouho[bestfit1, 3]; Kouho[5, 4] = th[10];
+                         Kouho[6, 0] = Kouho[bestfit1, 0]; Kouho[6, 1] = th[1];              Kouho[6, 2] = Kouho[bestfit1, 2]; Kouho[6, 3] = th[6];              Kouho[6, 4] = Kouho[bestfit1, 4];
+                         Kouho[7, 0] = th[2];              Kouho[7, 1] = Kouho[bestfit1, 1]; Kouho[7, 2] = th[7];              Kouho[7, 3] = Kouho[bestfit1, 3]; Kouho[7, 4] = th[11]; ;
+                         Kouho[8, 0] = Kouho[bestfit1, 0]; Kouho[8, 1] = th[3];              Kouho[8, 2] = Kouho[bestfit1, 2]; Kouho[8, 3] = th[8];              Kouho[8, 4] = Kouho[bestfit1, 4];
+                         Kouho[9, 0] = th[4];              Kouho[9, 1] = Kouho[bestfit1, 1]; Kouho[9, 2] = th[9];              Kouho[9, 3] = Kouho[bestfit1, 3]; Kouho[9, 4] = th[12];   */
+
+                     /*    Kouho[0, 0] = Kouho[bestfit1, 0]; Kouho[0, 1] = Kouho[bestfit2, 3]; Kouho[0, 2] = Kouho[bestfit2, 4]; Kouho[0, 3] = Kouho[bestfit1, 1]; Kouho[0, 4] = Kouho[bestfit1, 2]; //2点交叉 37.5%
+                         Kouho[1, 0] = Kouho[bestfit1, 0]; Kouho[1, 1] = Kouho[bestfit1, 1]; Kouho[1, 2] = Kouho[bestfit1, 2]; Kouho[1, 3] = Kouho[bestfit2, 3]; Kouho[1, 4] = Kouho[bestfit2, 4];
+                         Kouho[2, 0] = Kouho[bestfit1, 3]; Kouho[2, 1] = Kouho[bestfit1, 4]; Kouho[2, 2] = Kouho[bestfit1, 0]; Kouho[2, 3] = Kouho[bestfit2, 1]; Kouho[2, 4] = Kouho[bestfit2, 2];
+                         Kouho[3, 0] = Kouho[bestfit2, 1]; Kouho[3, 1] = Kouho[bestfit2, 2]; Kouho[3, 2] = Kouho[bestfit1, 3]; Kouho[3, 3] = Kouho[bestfit1, 4]; Kouho[3, 4] = Kouho[bestfit1, 0];
+                         Kouho[4, 0] = Kouho[bestfit2, 1]; Kouho[4, 1] = Kouho[bestfit2, 2]; Kouho[4, 2] = Kouho[bestfit1, 0]; Kouho[4, 3] = Kouho[bestfit1, 3]; Kouho[4, 4] = Kouho[bestfit1, 4];
+                              Kouho[5, 0] = Kouho[bestfit1, 0]; Kouho[5, 1] = th[0];              Kouho[5, 2] =  th[10];            Kouho[5, 3] = th[5];                Kouho[5, 4] = th[15]; 
+                           Kouho[6, 0] = th[1];              Kouho[6, 1] = Kouho[bestfit1, 1]; Kouho[6, 2] =  th[11];            Kouho[6, 3] = th[6];                Kouho[6, 4] = th[16];         
+                           Kouho[7, 0] = th[8];              Kouho[7, 1] = th[2];              Kouho[7, 2] =  Kouho[bestfit1, 2];Kouho[7, 3] = th[7];                Kouho[7, 4] = th[17]; 
+                           Kouho[8, 0] = th[12];             Kouho[8, 1] = th[3];              Kouho[8, 2] =  th[13];            Kouho[8, 3] = Kouho[bestfit1, 3];   Kouho[8, 4] = th[18]; 
+                           Kouho[9, 0] = Kouho[bestfit1, 0]; Kouho[9, 1] = th[4];              Kouho[9, 2] =  th[14];            Kouho[9, 3] = th[9];                Kouho[9, 4] = Kouho[bestfit1, 4];   */
+
+                 /* Kouho[0, 0] = Kouho[bestfit1, 0]; Kouho[0, 1] = Kouho[bestfit2, 3]; Kouho[0, 2] = Kouho[bestfit2, 4]; Kouho[0, 3] = Kouho[bestfit1, 1]; Kouho[0, 4] = Kouho[bestfit1, 2]; //2点交叉 50%
+                  Kouho[1, 0] = Kouho[bestfit1, 0]; Kouho[1, 1] = Kouho[bestfit1, 1]; Kouho[1, 2] = Kouho[bestfit1, 2]; Kouho[1, 3] = Kouho[bestfit2, 3]; Kouho[1, 4] = Kouho[bestfit2, 4];
+                  Kouho[2, 0] = Kouho[bestfit1, 3]; Kouho[2, 1] = Kouho[bestfit1, 4]; Kouho[2, 2] = Kouho[bestfit1, 0]; Kouho[2, 3] = Kouho[bestfit2, 1]; Kouho[2, 4] = Kouho[bestfit2, 2];
+                  Kouho[3, 0] = Kouho[bestfit2, 1]; Kouho[3, 1] = Kouho[bestfit2, 2]; Kouho[3, 2] = Kouho[bestfit1, 3]; Kouho[3, 3] = Kouho[bestfit1, 4]; Kouho[3, 4] = Kouho[bestfit1, 0];
+                  Kouho[4, 0] = Kouho[bestfit2, 1]; Kouho[4, 1] = Kouho[bestfit2, 2]; Kouho[4, 2] = Kouho[bestfit1, 0]; Kouho[4, 3] = Kouho[bestfit1, 3]; Kouho[4, 4] = Kouho[bestfit1, 4];
+                  Kouho[5, 0] = th[10]; Kouho[5, 1] = th[0]; Kouho[5, 2] = th[15]; Kouho[5, 3] = th[5]; Kouho[5, 4] = th[20];
+                  Kouho[6, 0] = th[11]; Kouho[6, 1] = th[1]; Kouho[6, 2] = th[16]; Kouho[6, 3] = th[6]; Kouho[6, 4] = th[21];
+                  Kouho[7, 0] = th[12]; Kouho[7, 1] = th[2]; Kouho[7, 2] = th[17]; Kouho[7, 3] = th[7]; Kouho[7, 4] = th[22];
+                  Kouho[8, 0] = th[13]; Kouho[8, 1] = th[3]; Kouho[8, 2] = th[18]; Kouho[8, 3] = th[8]; Kouho[8, 4] = th[23];
+                  Kouho[9, 0] = th[14]; Kouho[9, 1] = th[4]; Kouho[9, 2] = th[19]; Kouho[9, 3] = th[9]; Kouho[9, 4] = th[24];  */
+
+
+
+
+                    /*   Kouho[0, 0] = Kouho[bestfit1, 0]; Kouho[0, 1] = Kouho[bestfit2, 1]; Kouho[0, 2] = Kouho[bestfit1, 2]; Kouho[0, 3] = Kouho[bestfit2, 3]; Kouho[0, 4] = Kouho[bestfit1, 4]; //一様交叉 20%
+                       Kouho[1, 0] = Kouho[bestfit2, 0]; Kouho[1, 1] = Kouho[bestfit1, 1]; Kouho[1, 2] = Kouho[bestfit2, 2]; Kouho[1, 3] = Kouho[bestfit1, 3]; Kouho[1, 4] = Kouho[bestfit2, 4];
+                       Kouho[2, 0] = Kouho[bestfit1, 4]; Kouho[2, 1] = Kouho[bestfit2, 3]; Kouho[2, 2] = Kouho[bestfit1, 2]; Kouho[2, 3] = Kouho[bestfit2, 1]; Kouho[2, 4] = Kouho[bestfit2, 0];
+                       Kouho[3, 0] = Kouho[bestfit2, 4]; Kouho[3, 1] = Kouho[bestfit1, 3]; Kouho[3, 2] = Kouho[bestfit2, 2]; Kouho[3, 3] = Kouho[bestfit1, 1]; Kouho[3, 4] = Kouho[bestfit1, 0];
+                       Kouho[4, 0] = Kouho[bestfit1, 3]; Kouho[4, 1] = Kouho[bestfit2, 2]; Kouho[4, 2] = Kouho[bestfit1, 1]; Kouho[4, 3] = Kouho[bestfit2, 0]; Kouho[4, 4] = Kouho[bestfit1, 4];
+                       Kouho[5, 0] = th[5] ;             Kouho[5, 1] = Kouho[bestfit1, 1]; Kouho[5, 2] = Kouho[bestfit1, 2]; Kouho[5, 3] = Kouho[bestfit1, 3]; Kouho[5, 4] = Kouho[bestfit1, 4];
+                       Kouho[6, 0] = Kouho[bestfit1, 0]; Kouho[6, 1] = th[6];              Kouho[6, 2] = Kouho[bestfit1, 2]; Kouho[6, 3] = Kouho[bestfit1, 3]; Kouho[6, 4] = Kouho[bestfit1, 4];
+                       Kouho[7, 0] = Kouho[bestfit1, 0]; Kouho[7, 1] = Kouho[bestfit1, 1]; Kouho[7, 2] = th[7];              Kouho[7, 3] = Kouho[bestfit1, 3]; Kouho[7, 4] = Kouho[bestfit1, 4];
+                       Kouho[8, 0] = Kouho[bestfit1, 0]; Kouho[8, 1] = Kouho[bestfit1, 1]; Kouho[8, 2] = Kouho[bestfit1, 2]; Kouho[8, 3] = th[8];              Kouho[8, 4] = th[13];
+                       Kouho[9, 0] = th[9];              Kouho[9, 1] = th[10];             Kouho[9, 2] = th[11];             Kouho[9, 3] = th[12];             Kouho[9, 4] = th[14];  */
+
+                  /*    Kouho[0, 0] = Kouho[bestfit1, 0]; Kouho[0, 1] = Kouho[bestfit2, 1]; Kouho[0, 2] = Kouho[bestfit1, 2]; Kouho[0, 3] = Kouho[bestfit2, 3]; Kouho[0, 4] = Kouho[bestfit1, 4]; //一様交叉 25%
+                       Kouho[1, 0] = Kouho[bestfit2, 0]; Kouho[1, 1] = Kouho[bestfit1, 1]; Kouho[1, 2] = Kouho[bestfit2, 2]; Kouho[1, 3] = Kouho[bestfit1, 3]; Kouho[1, 4] = Kouho[bestfit2, 4];
+                       Kouho[2, 0] = Kouho[bestfit1, 4]; Kouho[2, 1] = Kouho[bestfit2, 3]; Kouho[2, 2] = Kouho[bestfit1, 2]; Kouho[2, 3] = Kouho[bestfit2, 1]; Kouho[2, 4] = Kouho[bestfit2, 0];
+                       Kouho[3, 0] = Kouho[bestfit2, 4]; Kouho[3, 1] = Kouho[bestfit1, 3]; Kouho[3, 2] = Kouho[bestfit2, 2]; Kouho[3, 3] = Kouho[bestfit1, 1]; Kouho[3, 4] = Kouho[bestfit1, 0];
+                       Kouho[4, 0] = Kouho[bestfit1, 3]; Kouho[4, 1] = Kouho[bestfit2, 2]; Kouho[4, 2] = Kouho[bestfit1, 1]; Kouho[4, 3] = Kouho[bestfit2, 0]; Kouho[4, 4] = Kouho[bestfit1, 4];
+                     Kouho[5, 0] = th[0];              Kouho[5, 1] = Kouho[bestfit1, 1]; Kouho[5, 2] = th[5];              Kouho[5, 3] = Kouho[bestfit1, 3]; Kouho[5, 4] = th[10];
+                     Kouho[6, 0] = Kouho[bestfit1, 0]; Kouho[6, 1] = th[1];              Kouho[6, 2] = Kouho[bestfit1, 2]; Kouho[6, 3] = th[6];              Kouho[6, 4] = Kouho[bestfit1, 4];
+                     Kouho[7, 0] = th[2];              Kouho[7, 1] = Kouho[bestfit1, 1]; Kouho[7, 2] = th[7];              Kouho[7, 3] = Kouho[bestfit1, 3]; Kouho[7, 4] = th[11]; ;
+                     Kouho[8, 0] = Kouho[bestfit1, 0]; Kouho[8, 1] = th[3];              Kouho[8, 2] = Kouho[bestfit1, 2]; Kouho[8, 3] = th[8];              Kouho[8, 4] = Kouho[bestfit1, 4];
+                     Kouho[9, 0] = th[4];              Kouho[9, 1] = Kouho[bestfit1, 1]; Kouho[9, 2] = th[9];              Kouho[9, 3] = Kouho[bestfit1, 3]; Kouho[9, 4] = th[12];    */
+
+
+                    /*    Kouho[0, 0] = Kouho[bestfit1, 0]; Kouho[0, 1] = Kouho[bestfit2, 1]; Kouho[0, 2] = Kouho[bestfit1, 2]; Kouho[0, 3] = Kouho[bestfit2, 3]; Kouho[0, 4] = Kouho[bestfit1, 4]; //一様交叉 37.5%
+                       Kouho[1, 0] = Kouho[bestfit2, 0]; Kouho[1, 1] = Kouho[bestfit1, 1]; Kouho[1, 2] = Kouho[bestfit2, 2]; Kouho[1, 3] = Kouho[bestfit1, 3]; Kouho[1, 4] = Kouho[bestfit2, 4];
+                       Kouho[2, 0] = Kouho[bestfit1, 4]; Kouho[2, 1] = Kouho[bestfit2, 3]; Kouho[2, 2] = Kouho[bestfit1, 2]; Kouho[2, 3] = Kouho[bestfit2, 1]; Kouho[2, 4] = Kouho[bestfit2, 0];
+                       Kouho[3, 0] = Kouho[bestfit2, 4]; Kouho[3, 1] = Kouho[bestfit1, 3]; Kouho[3, 2] = Kouho[bestfit2, 2]; Kouho[3, 3] = Kouho[bestfit1, 1]; Kouho[3, 4] = Kouho[bestfit1, 0];
+                       Kouho[4, 0] = Kouho[bestfit1, 3]; Kouho[4, 1] = Kouho[bestfit2, 2]; Kouho[4, 2] = Kouho[bestfit1, 1]; Kouho[4, 3] = Kouho[bestfit2, 0]; Kouho[4, 4] = Kouho[bestfit1, 4];
+                          Kouho[5, 0] = Kouho[bestfit1, 0]; Kouho[5, 1] = th[0];              Kouho[5, 2] =  th[10];            Kouho[5, 3] = th[5];                Kouho[5, 3] = th[15]; 
+                          Kouho[6, 0] = th[1];              Kouho[6, 1] = Kouho[bestfit1, 1]; Kouho[6, 2] =  th[11];            Kouho[6, 3] = th[6];                Kouho[6, 3] = th[16];         
+                          Kouho[7, 0] = th[8];              Kouho[7, 1] = th[2];              Kouho[7, 2] =  Kouho[bestfit1, 2];Kouho[7, 3] = th[7];                Kouho[7, 3] = th[17]; 
+                          Kouho[8, 0] = th[12];             Kouho[8, 1] = th[3];              Kouho[8, 2] =  th[13];            Kouho[8, 3] = Kouho[bestfit1, 3];   Kouho[8, 3] = th[18]; 
+                          Kouho[9, 0] = Kouho[bestfit1, 0]; Kouho[9, 1] = th[4];              Kouho[9, 2] =  th[14];            Kouho[9, 3] = th[9];                Kouho[9, 3] = Kouho[bestfit1, 4];    */ 
+
+                   /*    Kouho[0, 0] = Kouho[bestfit1, 0]; Kouho[0, 1] = Kouho[bestfit2, 1]; Kouho[0, 2] = Kouho[bestfit1, 2]; Kouho[0, 3] = Kouho[bestfit2, 3]; Kouho[0, 4] = Kouho[bestfit1, 4]; //一様交叉 50%
+                       Kouho[1, 0] = Kouho[bestfit2, 0]; Kouho[1, 1] = Kouho[bestfit1, 1]; Kouho[1, 2] = Kouho[bestfit2, 2]; Kouho[1, 3] = Kouho[bestfit1, 3]; Kouho[1, 4] = Kouho[bestfit2, 4];
+                       Kouho[2, 0] = Kouho[bestfit1, 4]; Kouho[2, 1] = Kouho[bestfit2, 3]; Kouho[2, 2] = Kouho[bestfit1, 2]; Kouho[2, 3] = Kouho[bestfit2, 1]; Kouho[2, 4] = Kouho[bestfit2, 0];
+                       Kouho[3, 0] = Kouho[bestfit2, 4]; Kouho[3, 1] = Kouho[bestfit1, 3]; Kouho[3, 2] = Kouho[bestfit2, 2]; Kouho[3, 3] = Kouho[bestfit1, 1]; Kouho[3, 4] = Kouho[bestfit1, 0];
+                       Kouho[4, 0] = Kouho[bestfit1, 3]; Kouho[4, 1] = Kouho[bestfit2, 2]; Kouho[4, 2] = Kouho[bestfit1, 1]; Kouho[4, 3] = Kouho[bestfit2, 0]; Kouho[4, 4] = Kouho[bestfit1, 4];
+                       Kouho[5, 0] = th[10]; Kouho[5, 1] = th[0]; Kouho[5, 2] = th[15]; Kouho[5, 3] = th[5]; Kouho[5, 4] = th[20];
+                       Kouho[6, 0] = th[11]; Kouho[6, 1] = th[1]; Kouho[6, 2] = th[16]; Kouho[6, 3] = th[6]; Kouho[6, 4] = th[21];
+                       Kouho[7, 0] = th[12]; Kouho[7, 1] = th[2]; Kouho[7, 2] = th[17]; Kouho[7, 3] = th[7]; Kouho[7, 4] = th[22];
+                       Kouho[8, 0] = th[13]; Kouho[8, 1] = th[3]; Kouho[8, 2] = th[18]; Kouho[8, 3] = th[8]; Kouho[8, 4] = th[23];
+                       Kouho[9, 0] = th[14]; Kouho[9, 1] = th[4]; Kouho[9, 2] = th[19]; Kouho[9, 3] = th[9]; Kouho[9, 4] = th[24];   */
+
+                /* for (int i = 0; i < 10; i++)
+                      {
+                          for (int j = 0; j < length; j++)
+                          {
+                              String s = GetRandomAlphaNumeric();
+                              while ((s == "1") || (s == "2") || (s == "3") || (s == "4") || (s == "5") || (s == "6") || (s == "7") || (s == "8") || (s == "9") || (s == "0"))
+                              {
+                                  s = GetRandomAlphaNumeric();
+                              }
+                              Kouho[i, j] = s;
+                          }
+                      }*/
+
+            }
+            /////////////////////////////////////////////////////////////
+            ////　　　　～これからやらないと駄目なこと～　　　　     ////　　　　　
+            ////　文字列の長さ(length)を変化させて調べる．           ////
+            ////　　→・様々な交叉方法で世代数の変化を調べる．       ////
+            ////    →・様々な変異確率で世代数の変化を調べる．       ////
+            ////　　→・それらで一番いい組み合わせを調べる．         ////
+            /////////////////////////////////////////////////////////////
+
+
+
+
+            Console.Read();
+
+        }
+
+        public static string GetRandomAlphaNumeric()  //ランダムで4文字生成
+        {
+            return Path.GetRandomFileName().Replace(".", "").Substring(0, 1);
+        }
+
+    }
+}
